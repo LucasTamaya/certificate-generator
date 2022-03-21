@@ -1,0 +1,87 @@
+/* Reset css */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* General */
+:root {
+  font-size: 10px;
+}
+
+body {
+  font-family: "sanchezregular";
+}
+
+/* Font */
+@font-face {
+  font-family: "sanchezregular";
+  src: url("/webfontkit-20220321-011046/sanchez-regular-webfont.woff2")
+      format("woff2"),
+    url("/webfontkit-20220321-011046/sanchez-regular-webfont.woff")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.mainContainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 20px;
+}
+
+.container-span {
+  font-size: 2.5rem;
+}
+
+.container-title {
+  font-size: 4rem;
+  font-weight: bold;
+  text-align: center;
+  color: #3492fd;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+}
+
+.form-label {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.form-input{
+    outline: none;
+    border: none;
+    border-bottom: 1px solid grey;
+    font-size: 1.8rem;
+}
+
+.form-btn{
+    padding: 7px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgb(19, 161, 19);
+    color: white;
+    font-size: 1.8rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.1s ease background-color;
+}
+
+.form-btn:hover{
+    background-color: rgb(28, 145, 28);
+}

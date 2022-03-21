@@ -10,11 +10,23 @@
 </head>
 
 <body>
-    <img src="https://codedamn.com/assets/images/red-logo.png" width="75" alt="codedamn logo" />
-    <h1>Codedamn Certificate Generator</h1>
+
+    <main class="mainContainer">
+        <div class="container">
+            <img src="https://codedamn.com/assets/images/red-logo.png" width="75" alt="codedamn logo" />
+            <span class="container-span">Get your certificate of</span>
+            <h1 class="container-title">Codedamn Project Certificate Generator</h1>
+            <form class="form">
+                <label class="form-label" for="name">Enter your name</label>
+                <input class="form-input" type="text" id="name">
+                <button class="form-btn">Generate Certificate</button>
+            </form>
+        </div>
+    </main>
+
     <script src="https://unpkg.com/pdf-lib@1.4.0"></script>
+    <script src="https://unpkg.com/downloadjs@1.4.7"></script>
     <script src="./FileSaver.js"></script>
-    <script src="https://unpkg.com/@pdf-lib/fontkit@0.0.4"></script>
     <script src="./index.js"></script>
 </body>
 
