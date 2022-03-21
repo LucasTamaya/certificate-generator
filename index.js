@@ -1,18 +1,37 @@
-const { PDFDocument, StandardFonts, rgb } = PDFLib;
+const { PDFDocument, StandardFonts, rgb } = require("pdf-lib");
+const fontkit = require("@pdf-lib/fontkit");
 
 const btn = document.querySelector(".form-btn");
 
+let inputName;
+let fontBytes;
+
 btn.addEventListener("click", (e) => {
   e.preventDefault();
+  // Récupère le nom de l'utilisateur
+  inputName = document.querySelector(".form-input").value;
   createPdf();
 });
+
+// Fetch the fonts
+const getFonts = async () => {
+  const url = "/webfontkit-20220321-011046/sanchez-regular-webfont.woff";
+  fontBytes = await fetch(url)
+    .then((res) => res.arrayBuffer())
+    .catch((err) => console.log(err));
+};
+
+getFonts();
 
 async function createPdf() {
   // Create a new PDFDocument
   const pdfDoc = await PDFDocument.create();
 
-  // Embed the Times Roman font
-  const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman);
+  //Add font kit to the project
+  pdfDoc.registerFontkit(fontkit);
+
+  // Embed the Sanchez Regular Font
+  const fontRef = await pdfDoc.embedFont(fontBytes);
 
   // Add a blank page to the document
   const page = pdfDoc.addPage();
@@ -20,14 +39,32 @@ async function createPdf() {
   // Get the width and height of the page
   const { width, height } = page.getSize();
 
-  // Draw a string of text toward the top of the page
+  // Set the font size
   const fontSize = 30;
-  page.drawText("Creating PDFs in JavaScript is awesome!", {
+
+  // Draw a string of text toward the top of the page
+  page.drawText("CERTIFICATE OF COMPLETION", {
     x: 50,
     y: height - 4 * fontSize,
     size: fontSize,
-    font: timesRomanFont,
+    font: fontRef,
     color: rgb(0, 0.53, 0.71),
+  });
+
+  page.drawText("THIS IS PRESENTED TO", {
+    x: 160,
+    y: height - 5 * fontSize,
+    size: fontSize - 8,
+    font: fontRef,
+    color: rgb(0.136, 0.136, 0.136),
+  });
+
+  page.drawText(inputName, {
+    x: 160,
+    y: height - 7 * fontSize,
+    size: fontSize + 1,
+    font: fontRef,
+    color: rgb(0.136, 0.136, 0.136),
   });
 
   // Serialize the PDFDocument to bytes (a Uint8Array)
