@@ -1,0 +1,2 @@
+tabs: ['README.md','index.html', 'script.js']
+terminal-one: static-server -p 1337 --no-cache
