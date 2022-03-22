@@ -2026,6 +2026,7 @@ const btn = document.querySelector(".form-btn");
 
 let inputName;
 let fontBytes;
+let imgBytes;
 
 btn.addEventListener("click", (e) => {
   e.preventDefault();
@@ -2042,7 +2043,16 @@ const getFonts = async () => {
     .catch((err) => console.log(err));
 };
 
+// Fetch the image
+const getImg = async () => {
+  const url = "/img/codedamn-logo.png";
+  imgBytes = await fetch(url)
+    .then((res) => res.arrayBuffer())
+    .catch((err) => console.log(err));
+};
+
 getFonts();
+getImg();
 
 async function createPdf() {
   // Create a new PDFDocument
@@ -2051,8 +2061,20 @@ async function createPdf() {
   //Add font kit to the project
   pdfDoc.registerFontkit(fontkit);
 
+  // Embed the regular font
+  const regularFont = await pdfDoc.embedFont(StandardFonts.Courier);
+
+  // Embed the bold font
+  const boldFont = await pdfDoc.embedFont(StandardFonts.CourierBold);
+
   // Embed the Sanchez Regular Font
-  const fontRef = await pdfDoc.embedFont(fontBytes);
+  const sanchezFont = await pdfDoc.embedFont(fontBytes);
+
+  // Embed the image
+  const imgRef = await pdfDoc.embedPng(imgBytes);
+
+  // Get the dimensions of the img
+  const imgDimensions = imgRef.scale(0.4);
 
   // Add a blank page to the document
   const page = pdfDoc.addPage();
@@ -2068,24 +2090,63 @@ async function createPdf() {
     x: 50,
     y: height - 4 * fontSize,
     size: fontSize,
-    font: fontRef,
+    font: boldFont,
     color: rgb(0, 0.53, 0.71),
   });
 
   page.drawText("THIS IS PRESENTED TO", {
-    x: 160,
-    y: height - 5 * fontSize,
+    x: 50,
+    y: height - 6 * fontSize,
     size: fontSize - 8,
-    font: fontRef,
+    font: regularFont,
     color: rgb(0.136, 0.136, 0.136),
   });
 
   page.drawText(inputName, {
-    x: 160,
-    y: height - 7 * fontSize,
+    x: 50,
+    y: height - 8 * fontSize,
     size: fontSize + 1,
-    font: fontRef,
+    font: sanchezFont,
+    color: rgb(0, 0.53, 0.71),
+  });
+
+  page.drawText("for trying their", {
+    x: 50,
+    y: height - 10 * fontSize,
+    size: fontSize - 8,
+    font: regularFont,
     color: rgb(0.136, 0.136, 0.136),
+  });
+
+  page.drawText("best to create a", {
+    x: 50,
+    y: height - 12 * fontSize,
+    size: fontSize - 8,
+    font: regularFont,
+    color: rgb(0.136, 0.136, 0.136),
+  });
+
+  page.drawText("certificate generator application", {
+    x: 50,
+    y: height - 14 * fontSize,
+    size: fontSize - 8,
+    font: regularFont,
+    color: rgb(0.136, 0.136, 0.136),
+  });
+
+  page.drawText("Codedamn", {
+    x: imgDimensions.width + 90,
+    y: height - 20 * fontSize,
+    size: fontSize * 2,
+    font: boldFont,
+    color: rgb(0.136, 0.136, 0.136),
+  });
+
+  page.drawImage(imgRef, {
+    x: 80,
+    y: height - 23 * fontSize,
+    width: imgDimensions.width,
+    height: imgDimensions.height,
   });
 
   // Serialize the PDFDocument to bytes (a Uint8Array)
